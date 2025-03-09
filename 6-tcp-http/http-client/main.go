@@ -18,6 +18,9 @@ func main() {
 		panic(err)
 	}
 	request.Write(conn)
+	// ネットワークからのレスポンスデータはまず OS の TCP バッファに蓄積される。
+	// bufio.NewReader を使うことで、TCP バッファから 4KB ずつまとめて読み込み、
+	// conn.Read() のシステムコール回数を削減し、パフォーマンスを向上させる。
 	response, err := http.ReadResponse(bufio.NewReader(conn), request)
 	if err != nil {
 		panic(err)
