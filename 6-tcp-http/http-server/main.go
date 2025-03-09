@@ -17,10 +17,12 @@ func main() {
 	}
 	fmt.Println("Server is running localhost:8080")
 	for {
+		// Accept()は新しいクライアント接続を受け付けるまでブロックする
 		conn, err := listener.Accept()
 		if err != nil {
 			panic(err)
 		}
+		// 各接続に対して新しいgoroutineを起動して並行処理
 		go func() {
 			fmt.Println("Accept %v\n", conn.RemoteAddr())
 			request, err := http.ReadRequest(bufio.NewReader(conn))
